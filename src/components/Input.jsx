@@ -28,6 +28,8 @@ const Input  = () => {
             },
             () => {
               getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                console.log("Chat ID:", data.chatId);
+
                 await updateDoc(doc(db, "chats", data.chatId), {
                   messages: arrayUnion({
                     id: uuid(),
@@ -41,6 +43,8 @@ const Input  = () => {
             }
           );
         } else {
+          console.log("Chat ID:", data.chatId);
+
           await updateDoc(doc(db, "chats", data.chatId), {
             messages: arrayUnion({
               id: uuid(),
@@ -50,14 +54,16 @@ const Input  = () => {
             }),
           });
         }
-    
+        console.log("Chat ID:", data.chatId);
+
         await updateDoc(doc(db, "userChats", currentUser.uid), {
           [data.chatId + ".lastMessage"]: {
             text,
           },
           [data.chatId + ".date"]: serverTimestamp(),
         });
-    
+        console.log("Chat ID:", data.chatId);
+
         await updateDoc(doc(db, "userChats", data.user.uid), {
           [data.chatId + ".lastMessage"]: {
             text,
